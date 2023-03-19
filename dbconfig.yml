@@ -1,0 +1,9 @@
+development:
+    dialect: postgres
+    dir: db/migrations
+    datasource: postgresql://postgres:password@localhost:5432/go_gql?sslmode=disable
+
+production:
+    dialect: postgres
+    dir: db/migrations
+    datasource: postgresql://postgres:password@localhost:5432/go_gql??sslmode=disable
