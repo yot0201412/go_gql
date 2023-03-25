@@ -8,6 +8,14 @@ import (
 	"time"
 )
 
+type Todo struct {
+	ID        int32
+	UserID    int32
+	Text      string
+	Done      bool
+	CreatedAt time.Time
+}
+
 type User struct {
 	ID        int32
 	Name      string
