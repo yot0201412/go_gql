@@ -9,6 +9,28 @@ import (
 	"context"
 )
 
+const createUser = `-- name: CreateUser :exec
+insert into users (name) values ($1)
+`
+
+func (q *Queries) CreateUser(ctx context.Context, name string) error {
+	_, err := q.db.ExecContext(ctx, createUser, name)
+	return err
+}
+
+const getUser = `-- name: GetUser :one
+select id, name, created_at
+from users
+where id = $1
+`
+
+func (q *Queries) GetUser(ctx context.Context, id int32) (User, error) {
+	row := q.db.QueryRowContext(ctx, getUser, id)
+	var i User
+	err := row.Scan(&i.ID, &i.Name, &i.CreatedAt)
+	return i, err
+}
+
 const getUsers = `-- name: GetUsers :many
 select id, name, created_at
 from users
