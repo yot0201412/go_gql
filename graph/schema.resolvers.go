@@ -18,7 +18,13 @@ func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) 
 
 // CreateUser is the resolver for the createUser field.
 func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (*model.User, error) {
-	panic(fmt.Errorf("not implemented: CreateUser - createUser"))
+	if err := r.Repo.CreateUser(ctx, input.Name); err != nil {
+		return nil, err
+	}
+	return &model.User{
+		ID:   string(1),
+		Name: input.Name,
+	}, nil
 }
 
 // Todos is the resolver for the todos field.
@@ -27,8 +33,15 @@ func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
 }
 
 // User is the resolver for the user field.
-func (r *queryResolver) User(ctx context.Context) (*model.User, error) {
-	panic(fmt.Errorf("not implemented: User - user"))
+func (r *queryResolver) User(ctx context.Context, input string) (*model.User, error) {
+	user, err := r.Repo.GetUser(ctx, ToInt32(input))
+	if err != nil {
+		return nil, err
+	}
+	return &model.User{
+		ID:   string(user.ID),
+		Name: user.Name,
+	}, nil
 }
 
 // User is the resolver for the user field.
