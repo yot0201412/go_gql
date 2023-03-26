@@ -6,6 +6,7 @@ package graph
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 
 	"github.com/yot0201412/go_gql/graph/model"
@@ -41,7 +42,17 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) 
 
 // Todos is the resolver for the todos field.
 func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: Todos - todos"))
+	todos, _ := r.Repo.GetTodosByUserID(ctx, sql.NullInt32{0, false})
+	var result []*model.Todo
+	for _, todo := range todos {
+		result = append(result, &model.Todo{
+			ID:     ToString(todo.ID),
+			Text:   todo.Text,
+			Done:   todo.Done,
+			UserID: ToString(todo.UserID),
+		})
+	}
+	return result, nil
 }
 
 // User is the resolver for the user field.
@@ -72,7 +83,11 @@ func (r *todoResolver) User(ctx context.Context, obj *model.Todo) (*model.User, 
 
 // Todos is the resolver for the todos field.
 func (r *userResolver) Todos(ctx context.Context, obj *model.User) ([]*model.Todo, error) {
-	todos, err := r.Repo.GetTodosByUserID(ctx, ToInt32(obj.ID))
+	todos, err := r.Repo.GetTodosByUserID(ctx,
+		sql.NullInt32{
+			ToInt32(obj.ID),
+			ToInt32(obj.ID) != 0,
+		})
 	if err != nil {
 		return nil, err
 	}

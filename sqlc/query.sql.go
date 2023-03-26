@@ -7,6 +7,7 @@ package sqlc
 
 import (
 	"context"
+	"database/sql"
 )
 
 const createTodo = `-- name: CreateTodo :exec
@@ -35,10 +36,16 @@ func (q *Queries) CreateUser(ctx context.Context, name string) error {
 const getTodosByUserID = `-- name: GetTodosByUserID :many
 select id, user_id, text, done, created_at
 from todos
-where user_id = $1
+where
+    true
+    and (  
+        -- sqlc.narg('user_id') is null
+        -- or 
+        user_id = $1
+    )
 `
 
-func (q *Queries) GetTodosByUserID(ctx context.Context, userID int32) ([]Todo, error) {
+func (q *Queries) GetTodosByUserID(ctx context.Context, userID sql.NullInt32) ([]Todo, error) {
 	rows, err := q.db.QueryContext(ctx, getTodosByUserID, userID)
 	if err != nil {
 		return nil, err
