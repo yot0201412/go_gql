@@ -39,9 +39,12 @@ from todos
 where
     true
     and (  
-        -- sqlc.narg('user_id') is null
+        -- -- sqlc.narg('user_id') is null
+        -- ISNULL(coalesce(sqlc.narg('user_id'), null))
+        user_id = $1 OR $1 IS NULL
+        -- ISNULL(sqlc.narg('user_id'))
         -- or 
-        user_id = $1
+        -- user_id = sqlc.narg('user_id')
     )
 `
 

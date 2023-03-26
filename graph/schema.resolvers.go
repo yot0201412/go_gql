@@ -35,14 +35,14 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) 
 		return nil, err
 	}
 	return &model.User{
-		ID:   string(1),
+		ID:   ToString(1),
 		Name: input.Name,
 	}, nil
 }
 
 // Todos is the resolver for the todos field.
 func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
-	todos, _ := r.Repo.GetTodosByUserID(ctx, sql.NullInt32{0, false})
+	todos, _ := r.Repo.GetTodosByUserID(ctx, sql.NullInt32{1, false})
 	var result []*model.Todo
 	for _, todo := range todos {
 		result = append(result, &model.Todo{

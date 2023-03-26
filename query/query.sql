@@ -16,4 +16,10 @@ insert into todos (user_id, text) values ($1, $2);
 -- name: GetTodosByUserID :many
 select *
 from todos
-where user_id = $1;
+where
+    true
+    and (
+        user_id = sqlc.narg('user_id') OR sqlc.narg('user_id') IS NULL
+    -- ここを逆で書いてしまうと、動かないので注意
+    )
+;
