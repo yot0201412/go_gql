@@ -9,6 +9,20 @@ import (
 	"context"
 )
 
+const createTodo = `-- name: CreateTodo :exec
+insert into todos (user_id, text) values ($1, $2)
+`
+
+type CreateTodoParams struct {
+	UserID int32
+	Text   string
+}
+
+func (q *Queries) CreateTodo(ctx context.Context, arg CreateTodoParams) error {
+	_, err := q.db.ExecContext(ctx, createTodo, arg.UserID, arg.Text)
+	return err
+}
+
 const createUser = `-- name: CreateUser :exec
 insert into users (name) values ($1)
 `
