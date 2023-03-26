@@ -50,20 +50,42 @@ func (r *queryResolver) User(ctx context.Context, input string) (*model.User, er
 	if err != nil {
 		return nil, err
 	}
-	return &model.User{
-		ID:   string(user.ID),
+	gUser := &model.User{
+		ID:   ToString(user.ID),
 		Name: user.Name,
-	}, nil
+	}
+	return gUser, nil
 }
 
 // User is the resolver for the user field.
 func (r *todoResolver) User(ctx context.Context, obj *model.Todo) (*model.User, error) {
-	panic(fmt.Errorf("not implemented: User - user"))
+	user, err := r.Repo.GetUser(ctx, ToInt32(obj.UserID))
+	fmt.Println(user)
+	if err != nil {
+		return nil, err
+	}
+	return &model.User{
+		ID:   ToString(user.ID),
+		Name: user.Name,
+	}, nil
 }
 
 // Todos is the resolver for the todos field.
-func (r *userResolver) Todos(ctx context.Context, obj *model.User) ([]*model.User, error) {
-	panic(fmt.Errorf("not implemented: Todos - todos"))
+func (r *userResolver) Todos(ctx context.Context, obj *model.User) ([]*model.Todo, error) {
+	todos, err := r.Repo.GetTodosByUserID(ctx, ToInt32(obj.ID))
+	if err != nil {
+		return nil, err
+	}
+	var result []*model.Todo
+	for _, todo := range todos {
+		result = append(result, &model.Todo{
+			ID:     ToString(todo.ID),
+			Text:   todo.Text,
+			Done:   todo.Done,
+			UserID: ToString(todo.UserID),
+		})
+	}
+	return result, nil
 }
 
 // Mutation returns MutationResolver implementation.

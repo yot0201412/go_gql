@@ -12,3 +12,8 @@ insert into users (name) values ($1);
 
 -- name: CreateTodo :exec
 insert into todos (user_id, text) values ($1, $2);
+
+-- name: GetTodosByUserID :many
+select *
+from todos
+where user_id = $1;

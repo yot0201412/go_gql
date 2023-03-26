@@ -32,6 +32,41 @@ func (q *Queries) CreateUser(ctx context.Context, name string) error {
 	return err
 }
 
+const getTodosByUserID = `-- name: GetTodosByUserID :many
+select id, user_id, text, done, created_at
+from todos
+where user_id = $1
+`
+
+func (q *Queries) GetTodosByUserID(ctx context.Context, userID int32) ([]Todo, error) {
+	rows, err := q.db.QueryContext(ctx, getTodosByUserID, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Todo
+	for rows.Next() {
+		var i Todo
+		if err := rows.Scan(
+			&i.ID,
+			&i.UserID,
+			&i.Text,
+			&i.Done,
+			&i.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getUser = `-- name: GetUser :one
 select id, name, created_at
 from users
