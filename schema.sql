@@ -21,10 +21,10 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: todo; Type: TABLE; Schema: public; Owner: postgres
+-- Name: todos; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.todo (
+CREATE TABLE public.todos (
     id integer NOT NULL,
     user_id integer NOT NULL,
     text text NOT NULL,
@@ -33,13 +33,13 @@ CREATE TABLE public.todo (
 );
 
 
-ALTER TABLE public.todo OWNER TO postgres;
+ALTER TABLE public.todos OWNER TO postgres;
 
 --
--- Name: todo_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: todos_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE public.todo_id_seq
+CREATE SEQUENCE public.todos_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -48,13 +48,13 @@ CREATE SEQUENCE public.todo_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.todo_id_seq OWNER TO postgres;
+ALTER TABLE public.todos_id_seq OWNER TO postgres;
 
 --
--- Name: todo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: todos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public.todo_id_seq OWNED BY public.todo.id;
+ALTER SEQUENCE public.todos_id_seq OWNED BY public.todos.id;
 
 
 --
@@ -93,10 +93,10 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
--- Name: todo id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: todos id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.todo ALTER COLUMN id SET DEFAULT nextval('public.todo_id_seq'::regclass);
+ALTER TABLE ONLY public.todos ALTER COLUMN id SET DEFAULT nextval('public.todos_id_seq'::regclass);
 
 
 --
@@ -107,11 +107,11 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 
 --
--- Name: todo todo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: todos todos_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.todo
-    ADD CONSTRAINT todo_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.todos
+    ADD CONSTRAINT todos_pkey PRIMARY KEY (id);
 
 
 --
@@ -123,11 +123,11 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: todo todo_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: todos todos_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.todo
-    ADD CONSTRAINT todo_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
+ALTER TABLE ONLY public.todos
+    ADD CONSTRAINT todos_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --

@@ -1,6 +1,6 @@
 
 -- +migrate Up
-CREATE TABLE todo (
+CREATE TABLE todos (
   id SERIAL PRIMARY KEY,
   user_id INT NOT NULL REFERENCES users(id),
   Text TEXT NOT NULL,
@@ -9,4 +9,4 @@ CREATE TABLE todo (
 );
 
 -- +migrate Down
-Drop table todo;
+Drop table todos;

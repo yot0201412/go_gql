@@ -9,11 +9,23 @@ import (
 	"fmt"
 
 	"github.com/yot0201412/go_gql/graph/model"
+	"github.com/yot0201412/go_gql/sqlc"
 )
 
 // CreateTodo is the resolver for the createTodo field.
 func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: CreateTodo - createTodo"))
+	param := sqlc.CreateTodoParams{
+		UserID: ToInt32(input.UserID),
+		Text:   input.Text,
+	}
+	if err := r.Repo.CreateTodo(ctx, param); err != nil {
+		return nil, err
+	}
+	return &model.Todo{
+		ID:   string(1),
+		Text: input.Text,
+		Done: false,
+	}, nil
 }
 
 // CreateUser is the resolver for the createUser field.
