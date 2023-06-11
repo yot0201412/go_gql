@@ -2,6 +2,11 @@
 
 package model
 
+type JSONTable struct {
+	ID       string `json:"id"`
+	JSONData string `json:"jsonData"`
+}
+
 type NewTodo struct {
 	Text   string `json:"text"`
 	UserID string `json:"userId"`

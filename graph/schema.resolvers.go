@@ -68,6 +68,11 @@ func (r *queryResolver) User(ctx context.Context, input string) (*model.User, er
 	return gUser, nil
 }
 
+// JSONData is the resolver for the jsonData field.
+func (r *queryResolver) JSONData(ctx context.Context, input string) (*model.JSONTable, error) {
+	panic(fmt.Errorf("not implemented: JSONData - jsonData"))
+}
+
 // User is the resolver for the user field.
 func (r *todoResolver) User(ctx context.Context, obj *model.Todo) (*model.User, error) {
 	user, err := r.Repo.GetUser(ctx, ToInt32(obj.UserID))

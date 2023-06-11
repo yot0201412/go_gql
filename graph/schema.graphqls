@@ -15,9 +15,15 @@ type User {
   todos: [Todo!]!
 }
 
+type JsonTable {
+  id: ID!
+  jsonData: String!
+}
+
 type Query {
   todos: [Todo!]!
   user (input: ID!): User!
+  jsonData (input: ID!): JsonTable!
 }
 
 input NewUser {
