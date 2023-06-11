@@ -23,3 +23,8 @@ where
     -- ここを逆で書いてしまうと、動かないので注意
     )
 ;
+
+-- name: SelectTJson :one
+select *
+from json_table
+where id = $1;

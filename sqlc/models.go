@@ -5,8 +5,14 @@
 package sqlc
 
 import (
+	"encoding/json"
 	"time"
 )
+
+type JsonTable struct {
+	ID       int32
+	JsonData json.RawMessage
+}
 
 type Todo struct {
 	ID        int32

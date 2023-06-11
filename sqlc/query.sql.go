@@ -38,13 +38,9 @@ select id, user_id, text, done, created_at
 from todos
 where
     true
-    and (  
-        -- -- sqlc.narg('user_id') is null
-        -- ISNULL(coalesce(sqlc.narg('user_id'), null))
+    and (
         user_id = $1 OR $1 IS NULL
-        -- ISNULL(sqlc.narg('user_id'))
-        -- or 
-        -- user_id = sqlc.narg('user_id')
+    -- ここを逆で書いてしまうと、動かないので注意
     )
 `
 
@@ -116,4 +112,17 @@ func (q *Queries) GetUsers(ctx context.Context) ([]User, error) {
 		return nil, err
 	}
 	return items, nil
+}
+
+const selectTJson = `-- name: SelectTJson :one
+select id, json_data
+from json_table
+where id = $1
+`
+
+func (q *Queries) SelectTJson(ctx context.Context, id int32) (JsonTable, error) {
+	row := q.db.QueryRowContext(ctx, selectTJson, id)
+	var i JsonTable
+	err := row.Scan(&i.ID, &i.JsonData)
+	return i, err
 }
