@@ -28,3 +28,10 @@ where
 select *
 from json_table
 where id = $1;
+
+-- name: SelectNameFromTJson :one
+select
+    id,
+    json_table->'name' as name
+from json_table
+where id = $1;

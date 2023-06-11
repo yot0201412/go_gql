@@ -114,6 +114,26 @@ func (q *Queries) GetUsers(ctx context.Context) ([]User, error) {
 	return items, nil
 }
 
+const selectNameFromTJson = `-- name: SelectNameFromTJson :one
+select
+    id,
+    json_table->'name' as name
+from json_table
+where id = $1
+`
+
+type SelectNameFromTJsonRow struct {
+	ID   int32
+	Name interface{}
+}
+
+func (q *Queries) SelectNameFromTJson(ctx context.Context, id int32) (SelectNameFromTJsonRow, error) {
+	row := q.db.QueryRowContext(ctx, selectNameFromTJson, id)
+	var i SelectNameFromTJsonRow
+	err := row.Scan(&i.ID, &i.Name)
+	return i, err
+}
+
 const selectTJson = `-- name: SelectTJson :one
 select id, json_data
 from json_table
