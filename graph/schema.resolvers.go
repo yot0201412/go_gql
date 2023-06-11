@@ -86,7 +86,10 @@ func (r *queryResolver) Name(ctx context.Context, input string) (string, error) 
 	if err != nil {
 		return "", err
 	}
-	ok := data.Name.(string)
+	ui, ok := data.Name.([]uint8)
+	if ok {
+		return string(ui), nil
+	}
 	fmt.Println(ok)
 	return "", nil
 }

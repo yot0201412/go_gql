@@ -117,7 +117,7 @@ func (q *Queries) GetUsers(ctx context.Context) ([]User, error) {
 const selectNameFromJson = `-- name: SelectNameFromJson :one
 select
     id,
-    json_data->'name' as name
+    json_data->>'name' as name
 from json_table
 where id = $1
 `
