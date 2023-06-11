@@ -29,9 +29,9 @@ select *
 from json_table
 where id = $1;
 
--- name: SelectNameFromTJson :one
+-- name: SelectNameFromJson :one
 select
     id,
-    json_table->'name' as name
+    json_data->'name' as name
 from json_table
 where id = $1;
