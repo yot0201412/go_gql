@@ -108,8 +108,8 @@ func (r *todoResolver) User(ctx context.Context, obj *model.Todo) (*model.User, 
 func (r *userResolver) Todos(ctx context.Context, obj *model.User) ([]*model.Todo, error) {
 	todos, err := r.Repo.GetTodosByUserID(ctx,
 		sql.NullInt32{
-			ToInt32(obj.ID),
-			ToInt32(obj.ID) != 0,
+			Int32: ToInt32(obj.ID),
+			Valid: ToInt32(obj.ID) != 0,
 		})
 	if err != nil {
 		return nil, err
