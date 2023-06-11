@@ -80,6 +80,17 @@ func (r *queryResolver) JSONData(ctx context.Context, input string) (*model.JSON
 	}, nil
 }
 
+// Name is the resolver for the name field.
+func (r *queryResolver) Name(ctx context.Context, input string) (string, error) {
+	data, err := r.Repo.SelectNameFromJson(ctx, ToInt32(input))
+	if err != nil {
+		return "", err
+	}
+	ok := data.Name.(string)
+	fmt.Println(ok)
+	return "", nil
+}
+
 // User is the resolver for the user field.
 func (r *todoResolver) User(ctx context.Context, obj *model.Todo) (*model.User, error) {
 	user, err := r.Repo.GetUser(ctx, ToInt32(obj.UserID))

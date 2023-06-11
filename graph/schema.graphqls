@@ -24,6 +24,7 @@ type Query {
   todos: [Todo!]!
   user (input: ID!): User!
   jsonData (input: ID!): JsonTable!
+  name (input: ID!): String!
 }
 
 input NewUser {
