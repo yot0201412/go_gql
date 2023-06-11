@@ -1,4 +1,4 @@
-//go:generate sqlc generate --file sqlc.yaml
+//go:generate sqlc-dev generate --file sqlc.yaml
 //go:generate go run github.com/99designs/gqlgen generate
 package main
 
