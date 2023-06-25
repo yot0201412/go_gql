@@ -117,20 +117,22 @@ func (q *Queries) GetUsers(ctx context.Context) ([]User, error) {
 const selectNameFromJson = `-- name: SelectNameFromJson :one
 select
     id,
-    json_data->>'name' as name
+    json_data->>'name' as name_json,
+    'name' || ' first' as name_first
 from json_table
 where id = $1
 `
 
 type SelectNameFromJsonRow struct {
-	ID   int32
-	Name interface{}
+	ID        int32
+	NameJson  sql.NullString
+	NameFirst sql.NullString
 }
 
 func (q *Queries) SelectNameFromJson(ctx context.Context, id int32) (SelectNameFromJsonRow, error) {
 	row := q.db.QueryRowContext(ctx, selectNameFromJson, id)
 	var i SelectNameFromJsonRow
-	err := row.Scan(&i.ID, &i.Name)
+	err := row.Scan(&i.ID, &i.NameJson, &i.NameFirst)
 	return i, err
 }
 

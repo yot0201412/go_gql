@@ -32,6 +32,7 @@ where id = $1;
 -- name: SelectNameFromJson :one
 select
     id,
-    json_data->>'name' as name
+    json_data->>'name' as name_json,
+    'name' || ' first' as name_first
 from json_table
 where id = $1;
