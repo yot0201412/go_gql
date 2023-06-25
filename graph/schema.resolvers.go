@@ -8,7 +8,6 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"reflect"
 
 	"github.com/yot0201412/go_gql/graph/model"
 	"github.com/yot0201412/go_gql/sqlc"
@@ -87,12 +86,7 @@ func (r *queryResolver) Name(ctx context.Context, input string) (string, error) 
 	if err != nil {
 		return "", err
 	}
-	ui, ok := data.Name.(string)
-	if !ok {
-		fmt.Println(reflect.TypeOf(data.Name))
-		return "", nil
-	}
-	return string(ui), nil
+	return data.NameJson.String, nil
 }
 
 // User is the resolver for the user field.
